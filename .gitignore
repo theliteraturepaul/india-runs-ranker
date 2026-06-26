@@ -1,0 +1,16 @@
+# Environments
+.env
+.venv/
+env/
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Data (Optional, but good practice so you don't upload giant datasets)
+data/raw/
+data/processed/
+*.csv
