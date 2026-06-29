@@ -36,12 +36,12 @@ graph TD
     style C fill:#6c5ce7,stroke:#a29bfe,stroke-width:2px,color:#fff
     style H fill:#00b894,stroke:#55efc4,stroke-width:2px,color:#fff
     style I fill:#d63031,stroke:#fab1a0,stroke-width:2px,color:#fff
-    ```
+```
 
 
 
 
-    ## ⚙️ Core Engine Architecture (`src/`)
+## ⚙️ Core Engine Architecture (`src/`)
 
 The ScoutAI ranking engine does not rely solely on basic keyword matching or pure black-box LLM scoring. Instead, it utilizes a **Hybrid Ranking System**, combining the semantic understanding of Google's Gemini models with high-speed FAISS vector search and strict, rules-based recruiter logic.
 
@@ -106,12 +106,12 @@ graph TD
     style E fill:#0984e3,stroke:#74b9ff,stroke-width:2px,color:#fff
     style F fill:#d63031,stroke:#fab1a0,stroke-width:2px,color:#fff
     style G fill:#00b894,stroke:#55efc4,stroke-width:2px,color:#fff
-    ```
+```
 
 
 
 
-    ## 🖥️ Frontend & User Interface (`app.py`)
+## 🖥️ Frontend & User Interface (`app.py`)
 
 To make the engine accessible to recruiters and judges, ScoutAI includes a premium, interactive web application built with **Streamlit**. 
 
@@ -170,12 +170,12 @@ graph TD
     style H fill:#00b894,stroke:#55efc4,stroke-width:2px,color:#fff
     style I fill:#d63031,stroke:#fab1a0,stroke-width:2px,color:#fff
     style J fill:#d63031,stroke:#fab1a0,stroke-width:2px,color:#fff
-    ```
+```
 
 
 
 
-    ## ⚙️ Headless Execution (`main.py`)
+## ⚙️ Headless Execution (`main.py`)
 
 For pure pipeline testing without the web interface, ScoutAI provides a robust Command Line Interface (CLI) entry point[cite: 10]. 
 
@@ -233,12 +233,12 @@ graph TD
     style F fill:#00b894,stroke:#55efc4,stroke-width:2px,color:#fff
     style G fill:#d63031,stroke:#fab1a0,stroke-width:2px,color:#fff
     style H fill:#d63031,stroke:#fab1a0,stroke-width:2px,color:#fff
-    ```
+```
 
 
 
 
-    ## 🎛️ System Configuration (`config.py`)
+## 🎛️ System Configuration (`config.py`)
 
 ScoutAI is designed to be highly modular. Rather than hardcoding hyperparameters into the ranking engine, all global variables, model selections, and directory paths are centrally managed in `config.py`. 
 
@@ -283,9 +283,11 @@ graph TD
     style F fill:#6c5ce7,stroke:#a29bfe,stroke-width:2px,color:#fff
     style G fill:#6c5ce7,stroke:#a29bfe,stroke-width:2px,color:#fff
     style H fill:#2d3436,stroke:#dfe6e9,stroke-width:2px,color:#fff
-    ```
+```
 
 
 
 
-    
+
+
+
