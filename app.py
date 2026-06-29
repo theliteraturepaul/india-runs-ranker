@@ -229,7 +229,7 @@ if run_button:
                 st.stop()
 
 
-# --- UI RENDERING & EXPORT (Only runs if data is in memory) ---
+## --- UI RENDERING & EXPORT (Only runs if data is in memory) ---
 if st.session_state.ranked_candidates is not None:
     ranked_candidates = st.session_state.ranked_candidates
     
@@ -238,39 +238,41 @@ if st.session_state.ranked_candidates is not None:
     # 1. Prepare JSON Data
     json_export = json.dumps(ranked_candidates, indent=4, ensure_ascii=False, default=str)
     
-   # 2. Prepare CSV Data
-AI_SKILLS = {
-    "python", "machine learning", "deep learning", "nlp", "llm",
-    "tensorflow", "pytorch", "scikit-learn", "sql", "data science",
-    "computer vision", "transformers", "langchain", "faiss", "rag",
-    "generative ai", "huggingface", "keras", "spark", "airflow"
-}
+    # 2. Prepare CSV Data
+    AI_SKILLS = {
+        "python", "machine learning", "deep learning", "nlp", "llm",
+        "tensorflow", "pytorch", "scikit-learn", "sql", "data science",
+        "computer vision", "transformers", "langchain", "faiss", "rag",
+        "generative ai", "huggingface", "keras", "spark", "airflow"
+    }
 
-csv_export_list = []
-for idx, r in enumerate(ranked_candidates, 1):
-    match = r.get("candidate", {})
-    profile = match.get("profile", {})
+    csv_export_list = []
+    for idx, r in enumerate(ranked_candidates, 1):
+        match = r.get("candidate", {})
+        profile = match.get("profile", {})
 
-    candidate_id = match.get("candidate_id", f"CAND_{idx:07d}")
-    title = profile.get("current_title", "Unknown")
-    yrs = profile.get("years_of_experience", 0)
-    response_rate = match.get("redrob_signals", {}).get("recruiter_response_rate", 0)
+        candidate_id = match.get("candidate_id", f"CAND_{idx:07d}")
+        title = profile.get("current_title", "Unknown")
+        yrs = profile.get("years_of_experience", 0)
+        response_rate = match.get("redrob_signals", {}).get("recruiter_response_rate", 0)
 
-    ai_skill_count = sum(
-        1 for s in match.get("skills", [])
-        if s.get("name", "").lower() in AI_SKILLS
-    )
+        ai_skill_count = sum(
+            1 for s in match.get("skills", [])
+            if s.get("name", "").lower() in AI_SKILLS
+        )
 
-    reasoning = f"{title} with {yrs} yrs; {ai_skill_count} AI core skills; response rate {response_rate:.2f}."
+        reasoning = f"{title} with {yrs} yrs; {ai_skill_count} AI core skills; response rate {response_rate:.2f}."
 
-    csv_export_list.append({
-        "candidate_id": candidate_id,
-        "rank": idx,
-        "score": round(r.get("final_score", 0), 4),
-        "reasoning": reasoning
-    })
-    
+        csv_export_list.append({
+            "candidate_id": candidate_id,
+            "rank": idx,
+            "score": round(r.get("final_score", 0), 4),
+            "reasoning": reasoning
+        })
+
+    # ← OUTSIDE the for loop, INSIDE the if block
     csv_export = pd.DataFrame(csv_export_list).to_csv(index=False).encode('utf-8')
+    
 
     # 3. Render Download Buttons
     dl_col1, dl_col2 = st.columns([1, 1])
