@@ -238,31 +238,38 @@ if st.session_state.ranked_candidates is not None:
     # 1. Prepare JSON Data
     json_export = json.dumps(ranked_candidates, indent=4, ensure_ascii=False, default=str)
     
-    # 2. Prepare CSV Data
-    csv_export_list = []
-    for idx, r in enumerate(ranked_candidates, 1):
-        match = r.get("candidate", {})
-        profile = match.get("profile", {})
-        personal_info = profile.get("personal_info", {})
-        
-        name = (personal_info.get("name") or 
-                profile.get("anonymized_name") or
-                profile.get("name") or
-                match.get("name") or
-                match.get("candidate_id") or 
-                f"Candidate {r.get('candidate_index', idx)}")
+   # 2. Prepare CSV Data
+AI_SKILLS = {
+    "python", "machine learning", "deep learning", "nlp", "llm",
+    "tensorflow", "pytorch", "scikit-learn", "sql", "data science",
+    "computer vision", "transformers", "langchain", "faiss", "rag",
+    "generative ai", "huggingface", "keras", "spark", "airflow"
+}
 
-        csv_export_list.append({
-            "Rank": idx,
-            "Name_or_ID": name,
-            "Final_Score": r.get("final_score"),
-            "Semantic_Score": r.get("semantic_score"),
-            "Signal_Score": r.get("signal_score"),
-            "Experience_Years": r.get("experience_years"),
-            "Missing_Dealbreakers": r.get("missing_dealbreakers_count"),
-            "AI_Reasoning": r.get("explanation")
-        })
-        
+csv_export_list = []
+for idx, r in enumerate(ranked_candidates, 1):
+    match = r.get("candidate", {})
+    profile = match.get("profile", {})
+
+    candidate_id = match.get("candidate_id", f"CAND_{idx:07d}")
+    title = profile.get("current_title", "Unknown")
+    yrs = profile.get("years_of_experience", 0)
+    response_rate = match.get("redrob_signals", {}).get("recruiter_response_rate", 0)
+
+    ai_skill_count = sum(
+        1 for s in match.get("skills", [])
+        if s.get("name", "").lower() in AI_SKILLS
+    )
+
+    reasoning = f"{title} with {yrs} yrs; {ai_skill_count} AI core skills; response rate {response_rate:.2f}."
+
+    csv_export_list.append({
+        "candidate_id": candidate_id,
+        "rank": idx,
+        "score": round(r.get("final_score", 0), 4),
+        "reasoning": reasoning
+    })
+    
     csv_export = pd.DataFrame(csv_export_list).to_csv(index=False).encode('utf-8')
 
     # 3. Render Download Buttons
